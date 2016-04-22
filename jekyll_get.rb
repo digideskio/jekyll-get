@@ -8,7 +8,9 @@ module Jekyll_Get
     priority :highest
 
     def generate(site)
-      config = site.config['jekyll_get']
+      config = SafeYAML.load(
+        ERB.new(site.config['jekyll_get'].to_yaml).result(binding)
+      )
       if !config
         return
       end
